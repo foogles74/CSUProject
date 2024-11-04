@@ -1,0 +1,46 @@
+version: "3.5"
+services:
+  database:
+    image: postgres:latest
+    container_name: csu_database
+    environment:
+      POSTGRES_DB: "main"
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123qwe
+    volumes:
+      - .:/database
+    ports:
+      - "5432:5432"
+  app:
+    container_name: csu_app
+    build: ./app/
+    image: event-planner-api:lastest
+    env_file:
+      - ./app/.env
+    volumes:
+      - ./app:/app
+    depends_on:
+      - database
+  web-proxy:
+    container_name: csu_web-proxy
+    build: ./web-proxy
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - app
+  rabbitmq:
+    container_name: csu_rabbitmq
+    image: rabbitmq:4-management
+    hostname: rabbitmq
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=123qwe
+    volumes:
+      - .:/rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672
+    depends_on:
+      - app
