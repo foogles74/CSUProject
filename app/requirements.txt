@@ -7,3 +7,5 @@ pydantic
 pydantic-settings
 sqlmodel
 starlette
+torch
+transformers
