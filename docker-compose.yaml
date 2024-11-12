@@ -21,7 +21,7 @@ services:
       - app/.env
     volumes:
       - ./app:/app
-      - F:/dockerModel/hub:/root/.cache/huggingface/hub
+      - ./dockerModel/hub:/root/.cache/huggingface/hub
     depends_on:
       - database
     deploy:
