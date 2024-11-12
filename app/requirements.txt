@@ -9,3 +9,4 @@ sqlmodel
 starlette
 torch
 transformers
+accelerate

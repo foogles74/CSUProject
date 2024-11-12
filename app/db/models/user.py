@@ -6,6 +6,7 @@ class User(SQLModel, table=True):
     login : str
     password: str
     email: str
+    balance : float = 0
 
 
     def __str__(self) -> str:

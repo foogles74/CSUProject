@@ -27,3 +27,9 @@ def create_user(new_user: User, session) -> None:
     session.add(new_user)
     session.commit()
     session.refresh(new_user)
+
+def change_balance(id : int, new_balance : float, session):
+    user = session.query(User).get(id)
+    user.balance = user.balance + new_balance
+    session.commit()
+    session.refresh(user)
