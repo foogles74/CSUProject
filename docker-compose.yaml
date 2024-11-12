@@ -21,8 +21,16 @@ services:
       - app/.env
     volumes:
       - ./app:/app
+      - F:/dockerModel/hub:/root/.cache/huggingface/hub
     depends_on:
       - database
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
   web-proxy:
     container_name: csu_web-proxy
     build: ./web-proxy

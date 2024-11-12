@@ -10,3 +10,4 @@ starlette
 torch
 transformers
 accelerate
+fastapi
