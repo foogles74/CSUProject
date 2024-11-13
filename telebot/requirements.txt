@@ -1,0 +1,3 @@
+telebot
+pydantic
+pydantic_settings

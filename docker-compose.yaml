@@ -39,6 +39,7 @@ services:
       - "443:443"
     depends_on:
       - app
+      - database
   rabbitmq:
     container_name: csu_rabbitmq
     image: rabbitmq:4-management
@@ -54,3 +55,14 @@ services:
       - "5672:5672"
     depends_on:
       - app
+      - database
+#  telebot:
+#    container_name: csu_telebot
+#    build: ./telebot/
+#    image: event-planner-api:lastest
+#    env_file:
+#      - telebot/.env
+#    volumes:
+#      - ./telebot:/telebot
+#    depends_on:
+#      - database

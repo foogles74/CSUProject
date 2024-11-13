@@ -10,7 +10,8 @@ from db.database import init_db, engine
 
 
 if __name__ == "__main__":
-    generate_text("Что такое ИИ?")
+    print("Yes")
+    # generate_text("Что такое ИИ?")
 
     # user_admin = User(login = "admin",email="admin@admin", password="123qwe",balance=999999)
     # user_test = User(login="test", email="test@admin", password="123qwe", balance=0)
