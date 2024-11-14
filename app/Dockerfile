@@ -12,4 +12,5 @@ ENV PATH="/app/venv/bin:$PATH"
 ENTRYPOINT ["python"]
 CMD ["main.py"]
 
+HEALTHCHECK --interval=5s --timeout=3s --retries=10 CMD curl --silent --fail http://localhost:8080 || exit 1
 EXPOSE 8080
