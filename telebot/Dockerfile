@@ -1,11 +1,14 @@
 FROM python:3.12-slim
-
+RUN pip install virtualenv
+RUN virtualenv /telebot/venv
+ADD app /telebot
 WORKDIR /telebot
 
-COPY requirements.txt /telebot/
 
-RUN pip install --upgrade pip && pip install -r /telebot/requirements.txt
+RUN . /telebot/venv/bin/activate && pip install --upgrade pip && pip install -r /telebot/requirements.txt
 
-EXPOSE 8081
+ENV PATH="/telebot/venv/bin:$PATH"
 
-CMD ["python", "telebot_main.py"]
+ENTRYPOINT ["python"]
+CMD ["telebot_main.py"]
+EXPOSE 8080

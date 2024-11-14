@@ -16,11 +16,9 @@ services:
   app:
     container_name: csu_app
     build: ./app/
-    image: event-planner-api:lastest
     env_file:
-      - app/.env
+      - app/app/.env
     volumes:
-      - ./app:/app
       - ./dockerModel/hub:/root/.cache/huggingface/hub
     depends_on:
       - database
@@ -56,13 +54,10 @@ services:
     depends_on:
       - app
       - database
-#  telebot:
-#    container_name: csu_telebot
-#    build: ./telebot/
-#    image: event-planner-api:lastest
-#    env_file:
-#      - telebot/.env
-#    volumes:
-#      - ./telebot:/telebot
-#    depends_on:
-#      - database
+  telebot:
+    container_name: csu_telebot
+    build: ./telebot/
+    env_file:
+      - telebot/app/.env
+    depends_on:
+      - database
