@@ -1,16 +1,35 @@
-from sqlmodel import Session
-from torch.utils.hipify.hipify_python import value
+from contextlib import asynccontextmanager
 
-from models.qwen.qwem_model import generate_text
-from db.models.transaction import Transaction
-from db.models.user import User
-from db.dao.transactionDAO import get_all_transactions,create_transaction,get_history_transactions
-from db.dao.userDAO import get_all_users,create_user
-from db.database import init_db, engine
+import uvicorn
+from fastapi import FastAPI
 
+from app.app.routes.home_route import home_route
+
+
+# from sqlmodel import Session
+# from torch.utils.hipify.hipify_python import value
+#
+# from models.qwen.qwem_model import generate_text
+# from db.models.transaction import Transaction
+# from db.models.user import User
+# from db.dao.transactionDAO import get_all_transactions,create_transaction,get_history_transactions
+# from db.dao.userDAO import get_all_users,create_user
+# from db.database import init_db, engine
+
+
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # init_db()
+    yield
+
+app = FastAPI(lifespan = lifespan)
+
+app.include_router(home_route)
 
 if __name__ == "__main__":
-    print("Yes")
+    uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=True)
     # generate_text("Что такое ИИ?")
 
     # user_admin = User(login = "admin",email="admin@admin", password="123qwe",balance=999999)
