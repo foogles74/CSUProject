@@ -11,4 +11,5 @@ ENV PATH="/telebot/venv/bin:$PATH"
 
 ENTRYPOINT ["python"]
 CMD ["telebot_main.py"]
-EXPOSE 8080
+HEALTHCHECK --interval=5s --timeout=3s --retries=10 CMD curl --silent --fail http://localhost:8081 || exit 1
+EXPOSE 8081
