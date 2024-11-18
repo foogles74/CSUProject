@@ -6,6 +6,8 @@ WORKDIR /app
 
 
 RUN . /app/venv/bin/activate && pip install --upgrade pip && pip install -r /app/requirements.txt
+RUN apt-get update && apt-get install -y curl
+CMD /bin/bash
 
 ENV PATH="/app/venv/bin:$PATH"
 

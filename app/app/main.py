@@ -3,7 +3,9 @@ from contextlib import asynccontextmanager
 import uvicorn
 from fastapi import FastAPI
 
-from app.app.routes.home_route import home_route
+from .routes.signin_route import signin_route
+from .routes.signup_route import signup_route
+from .routes.home_route import home_route
 
 
 # from sqlmodel import Session
@@ -14,19 +16,21 @@ from app.app.routes.home_route import home_route
 # from db.models.user import User
 # from db.dao.transactionDAO import get_all_transactions,create_transaction,get_history_transactions
 # from db.dao.userDAO import get_all_users,create_user
-# from db.database import init_db, engine
+from .db.database import init_db
 
 
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # init_db()
+    init_db()
     yield
 
 app = FastAPI(lifespan = lifespan)
 
 app.include_router(home_route)
+app.include_router(signin_route)
+app.include_router(signup_route)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=True)
