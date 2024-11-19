@@ -7,7 +7,3 @@ class User(SQLModel, table=True):
     password: str
     email: str
     balance : float = 0
-
-
-    def __str__(self) -> str:
-        return f"id: {self.user_id}, email: {self.email}"
