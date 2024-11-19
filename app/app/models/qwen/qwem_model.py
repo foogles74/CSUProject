@@ -1,4 +1,3 @@
-from sympy.categories.baseclasses import Class
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 

@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from ..models.qwen.qwem_model import QwenModel
+from app.app.models.qwen.qwem_model import QwenModel
 
 request_model_route = APIRouter()
 
