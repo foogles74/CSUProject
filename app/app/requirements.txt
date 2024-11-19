@@ -12,4 +12,3 @@ transformers
 accelerate
 fastapi
 uvicorn
-hashlib
