@@ -16,9 +16,9 @@ async def signup(data=Body()):
     email = data["email"]
     password = data["password"]
     with Session(engine) as session:
-        if get_user_by_email(email,session) == None:
+        if get_user_by_email(email, session) is not None:
             return JSONResponse(content={"message": "The email has already been registered"}, status_code=400)
-        elif get_user_by_login(login,session) == None:
+        elif get_user_by_login(login, session) is not None:
             return JSONResponse(content={"message": "The login has already been registered"}, status_code=400)
         else:
             new_user = User(login=login, email=email, password=create_hash(password), balance=0)

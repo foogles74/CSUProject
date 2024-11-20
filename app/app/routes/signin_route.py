@@ -3,12 +3,11 @@ from sqlmodel import Session
 from fastapi.responses import JSONResponse
 from app.app.db.dao.userDAO import get_user_by_email, get_user_by_login, create_user
 from app.app.db.database import engine
-from app.app.db.models.user import User
 from app.app.tools.create_hash import create_hash
 signin_route = APIRouter()
 
 
-@signin_route.get('/signin')
+@signin_route.post('/signin')
 async def signin(data=Body()):
     login = data["login"]
     email = data["email"]

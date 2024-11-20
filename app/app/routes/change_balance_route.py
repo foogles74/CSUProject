@@ -10,7 +10,7 @@ from app.app.db.models.transaction import Transaction
 change_balance_route = APIRouter()
 
 
-@change_balance_route.post('change_balance')
+@change_balance_route.post('/change_balance')
 async def home(data=Body()):
     login = data["login"]
     value = data["value"]
