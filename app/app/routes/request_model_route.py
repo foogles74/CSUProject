@@ -1,3 +1,4 @@
+from anyio.abc import value
 from fastapi import APIRouter
 from pyexpat.errors import messages
 from sqlmodel import Session
@@ -5,10 +6,12 @@ from fastapi.responses import JSONResponse
 
 from app.app.db.dao.chat_historyDAO import create_chat_history, get_chat_history_by_chat_id
 from app.app.db.dao.chatsDAO import get_chats_by_name, create_chat
+from app.app.db.dao.transactionDAO import create_transaction
 from app.app.db.dao.userDAO import get_user_by_login
 from app.app.db.database import engine
 from app.app.db.models.chat_history import ChatHistory
 from app.app.db.models.chats import Chat
+from app.app.db.models.transaction import Transaction
 from app.app.models.qwen.qwem_model import QwenModel
 
 request_model_route = APIRouter()
@@ -37,6 +40,7 @@ async def request_model(text, user, chat_name):
             create_chat_history(new_history_user,session)
             new_history_assistant = ChatHistory(chat_id=chat_id, person="assistant", value=generated_text)
             create_chat_history(new_history_assistant, session)
+            create_transaction(Transaction(user_id=user.user_id, value= -1),session)
             return generated_text
         else:
             return JSONResponse(content={"message": "User not found"}, status_code=400)
