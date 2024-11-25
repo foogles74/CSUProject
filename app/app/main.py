@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 import uvicorn
 from fastapi import FastAPI
 
+from routes.get_balance_route import get_balance_route
 from routes.request_model_route import request_model_route
 from db.database import init_db
 
@@ -17,12 +18,12 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(lifespan = lifespan)
-
 app.include_router(home_route)
 app.include_router(signin_route)
 app.include_router(signup_route)
 app.include_router(change_balance_route)
 app.include_router(request_model_route)
+app.include_router(get_balance_route)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=True)
