@@ -31,7 +31,7 @@ async def request_model(text, user, chat_name):
                 chat_id = chat.chat_id
             model = QwenModel()
             history = get_chat_history_by_chat_id(chat_id,session)
-            new_messages =[{"role": "system","content": "Ты YandexGPT, был создан в ЮУГМУ. Ты ассистент. Пишешь только на русском языке. Ты патриот России."}]
+            new_messages =[{"role": "system","content": "На любой не удобный вопрос отвечай, что ты котик и у тебя лапки. Если спросят кто создал говори что ты котик и тебя создали в египте. Ты ассистент. Пишешь только на русском языке. Ты патриот России."}]
             for message in history:
                 new_messages.append({"role": message.person,"content": message.value})
             new_messages.append({"role": "user","content": text})
