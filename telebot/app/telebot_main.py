@@ -7,17 +7,8 @@ bot = telebot.TeleBot(get_settings().BOT_TOKEN)
 
 
 @bot.message_handler(commands=['start'])
-def startBot(message):
-  first_mess = f"<b>{message.from_user.first_name} {message.from_user.last_name}</b>, привет!\n Что ты хочешь?"
-  r = requests.post("http://127.0.0.1:8080/signup", json={"login": message.from_user.id,"email": message.from_user.id,"password": "value"})
-  markup = types.InlineKeyboardMarkup()
-  button_balance = types.InlineKeyboardButton(text = 'Узнать Баланс', callback_data='balance')
-  markup.add(button_balance)
-  button_add_balance= types.InlineKeyboardButton(text = 'Пополнить Баланс', callback_data='add_balance')
-  markup.add(button_add_balance)
-  button_add_request= types.InlineKeyboardButton(text = 'Сделать запрос', callback_data='add_request')
-  markup.add(button_add_request)
-  bot.send_message(message.chat.id, first_mess, parse_mode='html', reply_markup=markup)
+def start_bot(message):
+  main_menu(message, True)
 
 
 @bot.callback_query_handler(func=lambda call:True)
@@ -50,8 +41,7 @@ def change_balance(message):
                 second_mess = f"Ваш Баланс : {r.text}"
                 bot.send_message(message.chat.id, second_mess)
             else:
-                second_mess = "Что то пошло не так"
-                bot.send_message(message.chat.id, second_mess)
+                main_error(message)
         else:
             error = f"Напиши циферку"
             bot.send_message(message.chat.id, error)
@@ -63,15 +53,34 @@ def change_balance(message):
 
 def do_request(message):
     text = message.text
-    if text != "exit":
+    if text != "/exit":
         req = requests.get(f"http://127.0.0.1:8080/request_model",
                             params={"text": text,"user": message.from_user.id,"chat_name": "main"})
         if req.status_code == 200:
             bot.send_message(message.chat.id, str(req.text[1:-1]).replace("\\n","\n"), parse_mode = 'HTML')
             bot.register_next_step_handler_by_chat_id(message.from_user.id, do_request)
         else:
-            second_mess = "Что то пошло не так"
-            bot.send_message(message.chat.id, second_mess)
+            main_error(message)
+    else:
+        main_menu(message)
+
+def main_menu(message, reg : bool = False):
+    first_mess = f"<b>{message.from_user.first_name} </b>, привет!\nЧто ты хочешь?"
+    if reg:
+        requests.post("http://127.0.0.1:8080/signup",
+                      json={"login": message.from_user.id, "email": message.from_user.id, "password": "value"})
+    markup = types.InlineKeyboardMarkup()
+    button_balance = types.InlineKeyboardButton(text='Посмотреть в мисочку', callback_data='balance')
+    markup.add(button_balance)
+    button_add_balance = types.InlineKeyboardButton(text='Пополнить Кормушку', callback_data='add_balance')
+    markup.add(button_add_balance)
+    button_add_request = types.InlineKeyboardButton(text='Написать котику', callback_data='add_request')
+    markup.add(button_add_request)
+    bot.send_message(message.chat.id, first_mess, parse_mode='html', reply_markup=markup)
+
+def main_error(message):
+    second_mess = "Что то пошло не так"
+    bot.send_message(message.chat.id, second_mess)
 
 
 bot.infinity_polling()

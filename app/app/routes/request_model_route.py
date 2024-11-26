@@ -44,3 +44,4 @@ async def request_model(text, user, chat_name):
             return generated_text
         else:
             return JSONResponse(content={"message": "User not found"}, status_code=400)
+

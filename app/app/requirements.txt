@@ -12,3 +12,4 @@ transformers
 accelerate
 fastapi
 uvicorn
+pika

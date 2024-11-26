@@ -27,6 +27,3 @@ app.include_router(get_balance_route)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=True)
-    # user_admin = User(login = "admin",email="admin@admin", password="123qwe",balance=999999)
-    # with Session(engine) as session:
-    #     create_user(user_admin,session)
