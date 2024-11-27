@@ -1,14 +1,16 @@
 from fastapi import APIRouter, Body
 from sqlmodel import Session
 from fastapi.responses import JSONResponse
+
+from app.app.auth.jwt_token import create_access_token, verify_access_token
 from app.app.db.dao.userDAO import get_user_by_email, get_user_by_login, create_user
 from app.app.db.database import engine
-from app.app.db.models.user import User
+from app.app.db.models.user import User, TokenResponse
 from app.app.tools.create_hash import create_hash
 
 sign_in_up_route = APIRouter(tags=['User'])
 
-@sign_in_up_route.post('/signin')
+@sign_in_up_route.post('/signin', response_model=TokenResponse)
 async def signin(data=Body()):
     login = data["login"]
     email = data["email"]
@@ -26,7 +28,8 @@ async def signin(data=Body()):
         else:
             return JSONResponse(content={"message": "User not found"}, status_code=400)
         if password_hash != "":
-            return JSONResponse(content={"message": "OK"}, status_code=200)
+            access_token = create_access_token(email)
+            return JSONResponse(content={"access_token": access_token, "token_type": "Bearer"}, status_code=200)
         else:
             return JSONResponse(content={"message": "Wrong password"}, status_code=401)
 
@@ -44,3 +47,12 @@ async def signup(data=Body()):
             new_user = User(login=login, email=email, password=create_hash(password), balance=0)
             create_user(new_user, session)
     return JSONResponse(content={"message": "OK"}, status_code=200)
+
+@sign_in_up_route.post('/validate')
+async def validate_token(data=Body()):
+    token = data["token"]
+    responce = verify_access_token(token)
+    if responce:
+        return JSONResponse(content={"message": "OK"}, status_code=200)
+    else:
+        return JSONResponse(content={"message": "Wrong token"}, status_code=401)

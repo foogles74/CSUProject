@@ -13,3 +13,4 @@ accelerate
 fastapi
 uvicorn
 pika
+python-jose
