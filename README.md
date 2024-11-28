@@ -4,5 +4,5 @@
 ```bash
 docker-compose up --build
 ```
-![Alt Te    xt](https://media.tenor.com/8Cdx8fRXcUwAAAAM/cat-%D0%BA%D0%BE%D1%88%D0%BA%D0%B0.gif)
+![Alt Text](https://media.tenor.com/8Cdx8fRXcUwAAAAM/cat-%D0%BA%D0%BE%D1%88%D0%BA%D0%B0.gif)
     

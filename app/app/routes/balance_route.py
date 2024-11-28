@@ -2,10 +2,10 @@ from fastapi import APIRouter, Body
 from sqlmodel import Session
 from fastapi.responses import JSONResponse
 
-from app.app.db.dao.transactionDAO import create_transaction
-from app.app.db.dao.userDAO import get_user_by_login, get_user_by_email
-from app.app.db.database import engine
-from app.app.db.models.transaction import Transaction
+from ..db.dao.transactionDAO import create_transaction
+from ..db.dao.userDAO import get_user_by_login, get_user_by_email
+from ..db.database import engine
+from ..db.models.transaction import Transaction
 
 balance_route = APIRouter(tags=['Balance'])
 

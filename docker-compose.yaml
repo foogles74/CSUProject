@@ -1,4 +1,3 @@
-version: "3"
 services:
   database:
     image: postgres:17-alpine
@@ -61,3 +60,8 @@ services:
       - telebot/app/.env
     depends_on:
       - database
+  web-app:
+    build: ./web_app
+    ports:
+      - "3000:3000"
+    container_name: web_app

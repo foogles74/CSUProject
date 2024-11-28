@@ -1,0 +1,7 @@
+app/.vscode
+app/.nvmrc
+app/.gitignore
+app/.git
+app/node_modules
+app/.svelte-kit
+app/app-output

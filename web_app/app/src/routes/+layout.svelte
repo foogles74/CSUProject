@@ -6,17 +6,17 @@
 <div class="basa overflow-hidden">
     <Navbar>
         <NavBrand href="/">
-          <img src="/src/images/cat.png" class="me-3 h-6 sm:h-9" alt="Flowbite Logo" />
+          <img src="../src/images/cat.png" class="me-3 h-6 sm:h-9" alt="Flowbite Logo" />
           <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">CatChat</span>
         </NavBrand>
         <NavHamburger  />
         <NavUl >
           <NavLi href="/">Чатик</NavLi>
           <NavLi href="https://github.com/foogles74">О нас</NavLi>
-          {#if data.auth == false}
+          {#if data.auth === false}
             <NavLi href="/users/signin">Авторизация</NavLi>
           {/if}
-          {#if data.auth == true}
+          {#if data.auth === true}
             <NavLi href="/users/signin">Пополнить баланс</NavLi>
             <NavLi href="/users/logout" data-sveltekit-reload>Выйти</NavLi>
           {/if}
@@ -25,7 +25,7 @@
       
 	<div class="slot">
 		<slot />
-	</div>  
+	</div>
 </div >
 <style>
     :global(body) {

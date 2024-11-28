@@ -8,7 +8,7 @@ export const actions = {
         const email = data.get('email');
         const password = data.get('password');
         
-        const response = await fetch('http://127.0.0.1:8080/user/signin', {
+        const response = await fetch('http://'+import.meta.env.SERVER_IP+':8080/user/signin', {
             method: 'POST',
             body: JSON.stringify({ "login": email, "email": email, "password": password }),
             headers: {
