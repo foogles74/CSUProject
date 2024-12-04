@@ -4,7 +4,7 @@ from pyexpat.errors import messages
 from sqlmodel import Session
 from fastapi.responses import JSONResponse
 
-from ..db.dao.chat_historyDAO import create_chat_history, get_chat_history_by_chat_id
+from app.db.dao.chat_historyDAO import create_chat_history, get_chat_history_by_chat_id
 from ..db.dao.chatsDAO import get_chats_by_name, create_chat
 from ..db.dao.transactionDAO import create_transaction
 from ..db.dao.userDAO import get_user_by_login

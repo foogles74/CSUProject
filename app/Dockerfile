@@ -1,18 +1,17 @@
 FROM python:3.12-slim
 RUN pip install virtualenv
 RUN virtualenv /app/venv
-ADD app /app
+
 WORKDIR /app
 
+COPY requirements.txt /app/
 
-RUN . /app/venv/bin/activate && pip install --upgrade pip && pip install -r /app/requirements.txt
-RUN apt-get update && apt-get install -y curl
+RUN . /app/venv/bin/activate && pip install --upgrade pip
+RUN pip install -r /app/requirements.txt
 CMD /bin/bash
 
 ENV PATH="/app/venv/bin:$PATH"
 
-ENTRYPOINT ["python"]
-CMD ["main.py"]
+ENTRYPOINT ["python","main.py"]
 
-HEALTHCHECK --interval=5s --timeout=3s --retries=10 CMD curl --silent --fail http://localhost:8080 || exit 1
 EXPOSE 8080

@@ -16,9 +16,10 @@ services:
     container_name: csu_app
     build: ./app/
     env_file:
-      - app/app/.env
+      - app/.env
     volumes:
       - ./dockerModel/hub:/root/.cache/huggingface/hub
+      - ./app:/app
     depends_on:
       - database
     deploy:
@@ -28,40 +29,40 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
-  web-proxy:
-    container_name: csu_web-proxy
-    build: ./web-proxy
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - app
-      - database
-  rabbitmq:
-    container_name: csu_rabbitmq
-    image: rabbitmq:4-management
-    hostname: rabbitmq
-    restart: always
-    environment:
-      - RABBITMQ_DEFAULT_USER=${LOGIN}
-      - RABBITMQ_DEFAULT_PASS=${PASSWORD}
-    volumes:
-      - .:/rabbitmq
-    ports:
-      - "15672:15672"
-      - "5672:5672"
-    depends_on:
-      - app
-      - database
-  telebot:
-    container_name: csu_telebot
-    build: ./telebot/
-    env_file:
-      - telebot/app/.env
-    depends_on:
-      - database
-  web-app:
-    build: ./web_app
-    ports:
-      - "3000:3000"
-    container_name: web_app
+#  web-proxy:
+#    container_name: csu_web-proxy
+#    build: ./web-proxy
+#    ports:
+#      - "80:80"
+#      - "443:443"
+#    depends_on:
+#      - app
+#      - database
+#  rabbitmq:
+#    container_name: csu_rabbitmq
+#    image: rabbitmq:4-management
+#    hostname: rabbitmq
+#    restart: always
+#    environment:
+#      - RABBITMQ_DEFAULT_USER=${LOGIN}
+#      - RABBITMQ_DEFAULT_PASS=${PASSWORD}
+#    volumes:
+#      - .:/rabbitmq
+#    ports:
+#      - "15672:15672"
+#      - "5672:5672"
+#    depends_on:
+#      - app
+#      - database
+#  telebot:
+#    container_name: csu_telebot
+#    build: ./telebot/
+#    env_file:
+#      - telebot/app/.env
+#    depends_on:
+#      - database
+#  web-app:
+#    build: ./web_app
+#    ports:
+#      - "3000:3000"
+#    container_name: web_app

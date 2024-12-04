@@ -1,11 +1,10 @@
 from typing import Optional
-from fastapi import HTTPException
 from fastapi.security import OAuth2
 from fastapi.security.utils import get_authorization_scheme_param
-from fastapi import Depends, FastAPI, HTTPException, Request, Response, status
+from fastapi import HTTPException, Request, status
 from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel
 
-from app.app.db.settings import get_settings
+from app.db.settings import get_settings
 
 settings = get_settings()
 
