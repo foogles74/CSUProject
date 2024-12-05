@@ -6,7 +6,7 @@
 <div class="basa overflow-hidden">
     <Navbar>
         <NavBrand href="/">
-          <img src="../src/images/cat.png" class="me-3 h-6 sm:h-9" alt="Flowbite Logo" />
+          <img src="https://i.pinimg.com/originals/85/f5/c4/85f5c40089984091cdff7536a6f909f5.jpg" class="me-3 h-6 sm:h-9" alt="Flowbite Logo" />
           <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">CatChat</span>
         </NavBrand>
         <NavHamburger  />

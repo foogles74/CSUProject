@@ -1,4 +1,5 @@
 export async function load({ cookies }) {
+    console.log(process.env.SERVER_IP)
 	const auth = cookies.get('token');
     if (auth === undefined){
         return {
