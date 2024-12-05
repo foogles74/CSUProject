@@ -1,5 +1,4 @@
 from typing import List
-
 from ..models.chat_history import ChatHistory
 
 

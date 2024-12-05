@@ -4,7 +4,7 @@ from telebot import types
 import requests
 
 bot = telebot.TeleBot(get_settings().BOT_TOKEN)
-
+server_ip = get_settings().SERVER_IP
 
 @bot.message_handler(commands=['start'])
 def start_bot(message):
@@ -15,7 +15,7 @@ def start_bot(message):
 def response(function_call):
     if function_call.message:
         if function_call.data == "balance":
-            r = requests.get(f"http://127.0.0.1:8080/get_balance_route/{function_call.from_user.id}")
+            r = requests.get(f"http://{server_ip}:8080/get_balance_route/{function_call.from_user.id}")
             second_mess = f"Ваш Баланс : {r.text}"
             bot.send_message(function_call.message.chat.id, second_mess)
             bot.answer_callback_query(function_call.id)
@@ -35,9 +35,9 @@ def change_balance(message):
     print(text)
     try:
         if type(int(text)) == int:
-            req = requests.post(f"http://127.0.0.1:8080/change_balance", json={"login": message.from_user.id,"value": text})
+            req = requests.post(f"http://{server_ip}:8080/change_balance", json={"login": message.from_user.id,"value": text})
             if req.status_code == 200:
-                r = requests.get(f"http://127.0.0.1:8080/get_balance_route/{message.from_user.id}")
+                r = requests.get(f"http://{server_ip}:8080/get_balance_route/{message.from_user.id}")
                 second_mess = f"Ваш Баланс : {r.text}"
                 bot.send_message(message.chat.id, second_mess)
             else:
@@ -54,7 +54,7 @@ def change_balance(message):
 def do_request(message):
     text = message.text
     if text != "/exit":
-        req = requests.get(f"http://127.0.0.1:8080/request_model",
+        req = requests.get(f"http://{server_ip}:8080/request_model",
                             params={"text": text,"user": message.from_user.id,"chat_name": "main"})
         if req.status_code == 200:
             bot.send_message(message.chat.id, str(req.text[1:-1]).replace("\\n","\n"), parse_mode = 'HTML')
@@ -67,7 +67,7 @@ def do_request(message):
 def main_menu(message, reg : bool = False):
     first_mess = f"<b>{message.from_user.first_name} </b>, привет!\nЧто ты хочешь?"
     if reg:
-        requests.post("http://127.0.0.1:8080/signup",
+        requests.post(f"http://{server_ip}:8080/signup",
                       json={"login": message.from_user.id, "email": message.from_user.id, "password": "value"})
     markup = types.InlineKeyboardMarkup()
     button_balance = types.InlineKeyboardButton(text='Посмотреть в мисочку', callback_data='balance')

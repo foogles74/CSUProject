@@ -29,40 +29,42 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
-#  web-proxy:
-#    container_name: csu_web-proxy
-#    build: ./web-proxy
-#    ports:
-#      - "80:80"
-#      - "443:443"
-#    depends_on:
-#      - app
-#      - database
-#  rabbitmq:
-#    container_name: csu_rabbitmq
-#    image: rabbitmq:4-management
-#    hostname: rabbitmq
-#    restart: always
-#    environment:
-#      - RABBITMQ_DEFAULT_USER=${LOGIN}
-#      - RABBITMQ_DEFAULT_PASS=${PASSWORD}
-#    volumes:
-#      - .:/rabbitmq
-#    ports:
-#      - "15672:15672"
-#      - "5672:5672"
-#    depends_on:
-#      - app
-#      - database
-#  telebot:
-#    container_name: csu_telebot
-#    build: ./telebot/
-#    env_file:
-#      - telebot/app/.env
-#    depends_on:
-#      - database
-#  web-app:
-#    build: ./web_app
-#    ports:
-#      - "3000:3000"
-#    container_name: web_app
+  web-proxy:
+    container_name: csu_web-proxy
+    build: ./web-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - app
+      - database
+  rabbitmq:
+    container_name: csu_rabbitmq
+    image: rabbitmq:4-management
+    hostname: rabbitmq
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=${LOGIN}
+      - RABBITMQ_DEFAULT_PASS=${PASSWORD}
+    volumes:
+      - .:/rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    depends_on:
+      - app
+      - database
+  telebot:
+    container_name: csu_telebot
+    build: ./telebot/
+    env_file:
+      - telebot/.env
+    depends_on:
+      - database
+    volumes:
+      - ./telebot:/telebot
+  web-app:
+    build: ./web_app
+    ports:
+      - "3000:3000"
+    container_name: web_app

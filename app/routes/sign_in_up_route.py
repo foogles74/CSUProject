@@ -2,11 +2,11 @@ from fastapi import APIRouter, Body
 from sqlmodel import Session
 from fastapi.responses import JSONResponse
 
-from app.auth.jwt_token import create_access_token, verify_access_token
-from app.db.dao.userDAO import get_user_by_email, get_user_by_login, create_user
-from app.db.database import engine
-from app.db.models.user import User, TokenResponse
-from app.tools.create_hash import create_hash
+from auth.jwt_token import create_access_token, verify_access_token
+from db.dao.userDAO import get_user_by_email, get_user_by_login, create_user
+from db.database import engine
+from db.models.user import User, TokenResponse
+from tools.create_hash import create_hash
 
 sign_in_up_route = APIRouter(tags=['User'])
 

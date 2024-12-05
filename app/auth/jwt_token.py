@@ -2,7 +2,7 @@ import time
 from datetime import datetime
 from jose import jwt, JWTError
 
-from app.db.settings import get_settings
+from db.settings import get_settings
 
 settings = get_settings()
 SECRET_KEY = settings.SECRET_KEY
