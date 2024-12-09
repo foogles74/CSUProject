@@ -1,5 +1,4 @@
 export async function load({ cookies }) {
-    console.log(process.env.SERVER_IP)
 	const auth = cookies.get('token');
     if (auth === undefined){
         return {
@@ -7,7 +6,7 @@ export async function load({ cookies }) {
         };  
     }
     try {
-        const response = await fetch('http://'+import.meta.env.SERVER_IP+':8080/user/validate', {
+        const response = await fetch('http://'+process.env.SERVER_IP+':8080/user/validate', {
             method: 'POST',
             body: JSON.stringify({"token": auth}),
             headers: {
