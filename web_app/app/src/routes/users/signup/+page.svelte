@@ -29,7 +29,7 @@ import { Button, Checkbox, Label, Input, Alert } from "flowbite-svelte";
         </Alert>
         {/if}
 
-        <Button type="submit" class="w-full1 text-green-300">Sign up</Button>  
+        <Button type="submit" class="w-full1 text-green-300">Зарегистрироваться</Button>
       </form>
     </div>
 

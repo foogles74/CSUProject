@@ -54,15 +54,15 @@ services:
     depends_on:
       - app
       - database
-  telebot:
-    container_name: csu_telebot
-    build: ./telebot/
-    env_file:
-      - telebot/.env
-    depends_on:
-      - database
-    volumes:
-      - ./telebot:/telebot
+#  telebot:
+#    container_name: csu_telebot
+#    build: ./telebot/
+#    env_file:
+#      - telebot/.env
+#    depends_on:
+#      - database
+#    volumes:
+#      - ./telebot:/telebot
   web-app:
     build: ./web_app
     env_file:
