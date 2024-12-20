@@ -11,14 +11,14 @@ from routes.sign_in_up_route import sign_in_up_route
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    init_db()
+    # init_db()
     yield
 
 app = FastAPI(lifespan = lifespan)
 app.include_router(sign_in_up_route, prefix='/user')
 app.include_router(balance_route, prefix='/balance')
 app.include_router(request_model_route)
-app.include_router(chat_route)
+app.include_router(chat_route, prefix='/ws')
 
 
 if __name__ == "__main__":

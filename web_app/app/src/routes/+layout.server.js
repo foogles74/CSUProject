@@ -6,6 +6,7 @@ export async function load({ cookies }) {
         };  
     }
     try {
+        // @ts-ignore
         const response = await fetch('http://'+process.env.SERVER_IP+':8080/user/validate', {
             method: 'POST',
             body: JSON.stringify({"token": auth}),

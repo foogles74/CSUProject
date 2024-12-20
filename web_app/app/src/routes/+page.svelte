@@ -1,5 +1,5 @@
 <script>
-	import {Alert, Card} from 'flowbite-svelte';
+	import {Alert, Card, Input} from 'flowbite-svelte';
     let currentMessage = '';
     import { onMount } from 'svelte';
 	import store from './store.js';
@@ -22,37 +22,42 @@
 		 }
 	}
 
-	let chat_name = "main"
+	let chat_name = "Main"
 	import {ForwardSolid} from 'flowbite-svelte-icons';
 	import {Listgroup} from 'flowbite-svelte';
 
 	let buttons = [
-		{name: 'Profile', mycustomfield: 'data1', current: true},
-		{name: 'Settings', mycustomfield: 'data2'},
-		{name: 'Messages', mycustomfield: 'data3'},
-		{name: 'Download', mycustomfield: 'data4', disabled: true, attrs: {type: 'submit'}}
+		{name: 'Main'},
+		{name: 'Settings'},
+		{name: 'Messages'},
+		{name: 'Download'}
 	];
 
 </script>
 
-<h1>Hello Chat</h1>
+<div class="flex w-full h-full">
+	<div class="flex-none mt-10 ml-10">
+		<h3 class="p-1 text-center text-xl font-medium text-gray-900 dark:text-white">{chat_name}</h3>
+		<Listgroup active items={buttons} let:item class="w-48" on:click={(e) => chat_name = e.detail["name"]}>
+			{item.name}
+		</Listgroup>
+	</div>
 
-<input type="text" bind:value={message} />
-<button on:click={onSendMessage}>
-	<ForwardSolid class="w-6 h-6"/>
-</button>
+	<div class="grow bg-gray-600 mt-10 mx-10">
+		<div class="overflow-y-auto" style="max-height: 80dvh; min-height: 80vh;">
+			{#each messages as message, i}
+				<Message {message} direction={i % 2 == 0 ? "left" :  "right" } jystify={i % 2 == 0 ? "start" :  "end" }
+						 user={i % 2 == 0 ? "User" :  "Bot" }/>
+			{/each}
+		</div>
 
+		<form class="flex w-full" on:keydown={(event) => event.key != 'Enter'}>
+			<Input class="grow dark:text-white " type="text" size="sm" placeholder="Сообщение"
+				   bind:value={message}/>
+			<button class="flex-none" on:click={onSendMessage} on:keypress={(e)=>alert(e)}>
+				<ForwardSolid class="w-6 h-6 justify-end"/>
+			</button>
+		</form>
 
-chat_name
-<div class="flex w-full">
-<Listgroup active items={buttons} let:item class="w-48" on:click={(e) => alert(Object.entries(e.detail))}>
-  {item.name}
-</Listgroup>
-
-	<div class="justify-center w-full bg-gray-800">
-		{#each messages as message, i}
-			<Message {message} direction={i % 2 == 0 ? "left" :  "right" } jystify={i % 2 == 0 ? "start" :  "end" }
-					 user={i % 2 == 0 ? "User" :  "Bot" }/>
-		{/each}
 	</div>
 </div>

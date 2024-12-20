@@ -1,7 +1,8 @@
 <script>
     import "../app.css";
     import { Navbar, NavBrand, NavLi, NavUl, NavHamburger  } from 'flowbite-svelte';
-    let { data } = $props(); 
+    let { data } = $props();
+    import { P } from 'flowbite-svelte';
 </script>   
 <div class="basa overflow-hidden">
     <Navbar>
@@ -21,12 +22,20 @@
             <NavLi href="/users/logout" data-sveltekit-reload>Выйти</NavLi>
           {/if}
         </NavUl>
-      </Navbar>
-      
-	<div class="slot">
-		<slot />
-	</div>
-</div >
+    </Navbar>
+     <div class="slot">
+            <slot/>
+        </div>
+    <!--{#if data.auth === true}-->
+    <!--    <div class="slot">-->
+    <!--        <slot/>-->
+    <!--    </div>-->
+    <!--    {:else}-->
+    <!--    <div class="flex items-center justify-center h-full">-->
+    <!--        <P size="9xl">Необходимо авторизоваться</P>-->
+    <!--    </div>-->
+    <!--{/if}-->
+</div>
 <style>
     :global(body) {
         background-color: #a5a199;

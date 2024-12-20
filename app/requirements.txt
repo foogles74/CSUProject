@@ -14,3 +14,4 @@ fastapi
 uvicorn
 pika
 python-jose
+uvicorn[standard]

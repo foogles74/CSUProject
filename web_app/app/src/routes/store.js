@@ -3,7 +3,7 @@ import { writable } from 'svelte/store';
 const messageStore = writable('');
 
 // @ts-ignore
-const socket = new WebSocket('wss://echo.websocket.org');
+const socket = new WebSocket('ws://'+process.env.SERVER_IP+':8080/ws/messages');
 
 // Connection opened
 socket.addEventListener('open', function (event) {
