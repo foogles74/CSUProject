@@ -5,6 +5,7 @@ chat_route = APIRouter()
 
 @chat_route.websocket("/messages")
 async def websocket_endpoint(websocket: WebSocket):
+    print("connected open websocket")
     await websocket.accept()
     while True:
         data = await websocket.receive_text()

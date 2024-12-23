@@ -10,11 +10,6 @@ socket.addEventListener('open', function (event) {
     console.log("It's open");
 });
 
-// // Listen for messages
-// socket.addEventListener('message', function (event) {
-//     messageStore.set(event.data);
-// });
-
 socket.onmessage = function(event) {
   messageStore.set(event.data);
 };

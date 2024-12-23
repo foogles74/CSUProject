@@ -15,3 +15,4 @@ uvicorn
 pika
 python-jose
 uvicorn[standard]
+websocket
