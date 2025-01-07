@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Body
 from fastapi.responses import JSONResponse
 from sqlmodel import Session
 
@@ -15,11 +15,14 @@ from models.qwen.qwem_model import QwenModel
 request_model_route = APIRouter()
 
 
-@request_model_route.get('/request_model')
-async def request_model(text, user, chat_name):
+@request_model_route.post('/request_model')
+async def request_model(data=Body()):
 
     with Session(engine) as session:
-        user = get_user_by_login(user, session)
+        text = data["text"]
+        login = data["user"]
+        chat_name = data["chat_name"]
+        user = get_user_by_login(login, session)
         if user is not None:
             chat = get_chats_by_name(user.user_id, chat_name, session)
             if chat is None:

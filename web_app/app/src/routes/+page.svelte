@@ -1,30 +1,19 @@
 <script>
 	import {Alert, Card, Input} from 'flowbite-svelte';
-    let currentMessage = '';
-    import { onMount } from 'svelte';
-	import store from './store.js';
-	import Message from './message.svelte';
-	let message;
-	let messages = [];
-
-	onMount(() => {
-		store.subscribe(currentMessage => {
-            messages = [...messages, currentMessage];
-		})
-	})
-
-	function onSendMessage() {
-		 if (message.length > 0) {
-			 store.sendMessage(message);
-			 messages = [...messages, message];
-			 message = "";
-
-		 }
-	}
-
-	let chat_name = "Main"
 	import {ForwardSolid} from 'flowbite-svelte-icons';
 	import {Listgroup} from 'flowbite-svelte';
+	import Message from './message.svelte';
+	import store from './store.js'
+
+	let currentMessage = '';
+	let message;
+	let messages = [];
+	let chat_name = "Main"
+
+	async function onSendMessage() {
+
+			messages = [...messages, store.SendMessage(message,chat_name)];
+	}
 
 	let buttons = [
 		{name: 'Main'},
