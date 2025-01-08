@@ -67,6 +67,8 @@ services:
     build: ./web_app
     env_file:
       - web_app/app/.env
+    environment:
+      - SERVER_IP=app
     ports:
       - "3000:3000"
     container_name: web_app

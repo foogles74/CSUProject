@@ -1,5 +1,3 @@
-import { writable } from 'svelte/store';
-
 /**
  * @param {any} message
  * @param {any} chat_name
@@ -13,9 +11,10 @@ async function SendMessage(message,chat_name) {
 				'Content-Type': 'application/json'
 			}
 		});
-		console.log(response.body)
+		console.log(response.json())
 		if (response.status === 200) {
-            return response.body
+			console.log(response.json())
+            return response.json()
 		}
 }
 

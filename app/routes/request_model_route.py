@@ -1,3 +1,5 @@
+import json
+
 from fastapi import APIRouter, Body
 from fastapi.responses import JSONResponse
 from sqlmodel import Session
@@ -5,7 +7,7 @@ from sqlmodel import Session
 from db.dao.chat_historyDAO import create_chat_history, get_chat_history_by_chat_id
 from db.dao.chatsDAO import get_chats_by_name, create_chat
 from db.dao.transactionDAO import create_transaction
-from db.dao.userDAO import get_user_by_login
+from db.dao.userDAO import get_user_by_email
 from db.database import engine
 from db.models.chat_history import ChatHistory
 from db.models.chats import Chat
@@ -22,7 +24,7 @@ async def request_model(data=Body()):
         text = data["text"]
         login = data["user"]
         chat_name = data["chat_name"]
-        user = get_user_by_login(login, session)
+        user = get_user_by_email(login, session)
         if user is not None:
             chat = get_chats_by_name(user.user_id, chat_name, session)
             if chat is None:
@@ -42,7 +44,27 @@ async def request_model(data=Body()):
             new_history_assistant = ChatHistory(chat_id=chat_id, person="assistant", value=generated_text)
             create_chat_history(new_history_assistant, session)
             create_transaction(Transaction(user_id=user.user_id, value= -1),session)
-            return generated_text
+            return JSONResponse(content={"bot":generated_text}, status_code=200)
         else:
             return JSONResponse(content={"message": "User not found"}, status_code=400)
 
+@request_model_route.post('/get_chat_history')
+async def get_chat_history(data=Body()):
+    with Session(engine) as session:
+        login = data["user"]
+        chat_name = data["chat_name"]
+        user = get_user_by_email(login, session)
+        if user is not None:
+            chat = get_chats_by_name(user.user_id, chat_name, session)
+            if chat is None:
+                new_chat = Chat(user_id = user.user_id, name= chat_name)
+                chat_id = create_chat(new_chat,session)
+            else:
+                chat_id = chat.chat_id
+            history = get_chat_history_by_chat_id(chat_id, session)
+            new_json = []
+            for message in history:
+                new_json.append({message.person: message.value})
+            return JSONResponse(content=new_json, status_code=200)
+        else:
+            return JSONResponse(content={"message": "User not found"}, status_code=400)

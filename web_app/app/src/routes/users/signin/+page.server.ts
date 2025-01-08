@@ -17,6 +17,7 @@ export const actions = {
         });
         if (response.status == 200) {
             const text = await response.json();
+            cookies.set('email',email, { path: '/' });
             cookies.set('token',text.access_token, { path: '/' });
             cookies.set('token_type',text.token_type, { path: '/' });
             throw redirect(302, '/'); 

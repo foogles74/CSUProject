@@ -1,29 +1,24 @@
 <script>
-	import {Alert, Card, Input} from 'flowbite-svelte';
+	import {Input} from 'flowbite-svelte';
 	import {ForwardSolid} from 'flowbite-svelte-icons';
 	import {Listgroup} from 'flowbite-svelte';
 	import Message from './message.svelte';
-	import store from './store.js'
-
+	export let form;
+	import { enhance, applyAction } from '$app/forms';
 	let currentMessage = '';
 	let message;
 	let messages = [];
-	let chat_name = "Main"
-
-	async function onSendMessage() {
-
-			messages = [...messages, store.SendMessage(message,chat_name)];
-	}
-
+	let chat_name = "Первый Чат"
+	let visible = true
 	let buttons = [
-		{name: 'Main'},
-		{name: 'Settings'},
-		{name: 'Messages'},
-		{name: 'Download'}
+		{name: 'Первый Чат'},
+		{name: 'Второй Чат'},
+		{name: 'Третий Чат'},
+		{name: 'Четвертый Чат'}
 	];
-
 </script>
 
+{form?.otvet}
 <div class="flex w-full h-full">
 	<div class="flex-none mt-10 ml-10">
 		<h3 class="p-1 text-center text-xl font-medium text-gray-900 dark:text-white">{chat_name}</h3>
@@ -40,12 +35,25 @@
 			{/each}
 		</div>
 
-		<form class="flex w-full" on:keydown={(event) => event.key != 'Enter'}>
-			<Input class="grow dark:text-white " type="text" size="sm" placeholder="Сообщение"
+		<form method="POST" class="flex w-full"
+			  use:enhance={({ formElement, formData, action, cancel }) => {
+				    visible = false
+				    messages = [...messages, message]
+					message = ""
+					return async ({ result }) => {
+						messages = [...messages, result.data.otvet.toString()]
+						visible = true
+						};
+		}}>
+			{#if visible === true}
+			<Input class="grow dark:text-white " type="text" size="sm" placeholder="Сообщение" name="message"
 				   bind:value={message}/>
-			<button class="flex-none" on:click={onSendMessage} on:keypress={(e)=>alert(e)}>
+			<Input class="grow dark:text-white hidden" type="text" size="sm" placeholder="Сообщение" name="chat_name"
+				   bind:value={chat_name}/>
+			<button class="flex-none">
 				<ForwardSolid class="w-6 h-6 justify-end"/>
 			</button>
+			{/if}
 		</form>
 
 	</div>
