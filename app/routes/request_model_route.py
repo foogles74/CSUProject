@@ -64,7 +64,7 @@ async def get_chat_history(data=Body()):
             history = get_chat_history_by_chat_id(chat_id, session)
             new_json = []
             for message in history:
-                new_json.append({message.person: message.value})
+                new_json.append( message.value)
             return JSONResponse(content=new_json, status_code=200)
         else:
             return JSONResponse(content={"message": "User not found"}, status_code=400)

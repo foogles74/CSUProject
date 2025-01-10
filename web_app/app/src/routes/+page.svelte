@@ -1,13 +1,15 @@
-<script>
+<script lang="ts">
 	import {Input} from 'flowbite-svelte';
 	import {ForwardSolid} from 'flowbite-svelte-icons';
 	import {Listgroup} from 'flowbite-svelte';
 	import Message from './message.svelte';
-	export let form;
+	import type { PageData , ActionData } from './$types';
 	import { enhance, applyAction } from '$app/forms';
-	let currentMessage = '';
-	let message;
+	let { data, form }: { data: PageData, form: ActionData} = $props();
 	let messages = [];
+	messages = data.messages
+	let message;
+
 	let chat_name = "Первый Чат"
 	let visible = true
 	let buttons = [
@@ -17,8 +19,6 @@
 		{name: 'Четвертый Чат'}
 	];
 </script>
-
-{form?.otvet}
 <div class="flex w-full h-full">
 	<div class="flex-none mt-10 ml-10">
 		<h3 class="p-1 text-center text-xl font-medium text-gray-900 dark:text-white">{chat_name}</h3>
@@ -44,13 +44,15 @@
 						messages = [...messages, result.data.otvet.toString()]
 						visible = true
 						};
-		}}>
+		}
+
+		}>
 			{#if visible === true}
 			<Input class="grow dark:text-white " type="text" size="sm" placeholder="Сообщение" name="message"
 				   bind:value={message}/>
 			<Input class="grow dark:text-white hidden" type="text" size="sm" placeholder="Сообщение" name="chat_name"
 				   bind:value={chat_name}/>
-			<button class="flex-none">
+			<button class="flex-none" on:click={() => {}}>
 				<ForwardSolid class="w-6 h-6 justify-end"/>
 			</button>
 			{/if}

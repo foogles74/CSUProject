@@ -13,9 +13,15 @@ export async function load({ cookies }) {
         });
         if (response.status === 200) {
             const history = await response.json()
-            // TODO: история
+            let test: string[] = []
+            history.forEach(function (element) {
+                // console.log(element);
+                test.push(element)
+            })
+
+            return {"messages" :test}
         } else {
-            const text = await response.json()
+
         }
     }catch (e) {
         console.log(e)
@@ -38,7 +44,7 @@ export const actions = {
             console.log("end")
             if (response.status === 200) {
                 const text = await response.json()
-                console.log(text.bot)
+                // console.log(text.bot)
                 return {otvet: text.bot,vopros : data.get("message")}
             }
         } catch (e) {

@@ -1,6 +1,8 @@
 from contextlib import asynccontextmanager
 import uvicorn
 from fastapi import FastAPI
+
+from models.qwen.qwem_model import QwenModel
 from routes.websocket_route import chat_route
 from routes.request_model_route import request_model_route
 from db.database import init_db
@@ -23,3 +25,4 @@ app.include_router(chat_route, prefix='/ws')
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=True)
+    # QwenModel()
