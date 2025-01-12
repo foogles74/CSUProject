@@ -9,6 +9,9 @@
 	let messages = [];
 	messages = data.messages
 	let message;
+	import type { ActionResult } from '@sveltejs/kit';
+	import { deserialize } from '$app/forms';
+	import { invalidateAll, goto } from '$app/navigation';
 
 	let chat_name = "Первый Чат"
 	let visible = true
@@ -18,6 +21,27 @@
 		{name: 'Третий Чат'},
 		{name: 'Четвертый Чат'}
 	];
+
+	async function handleSubmit(event: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement}) {
+		event.preventDefault();
+		const data = new FormData(event.currentTarget);
+		console.log("start")
+		visible = false
+		const response = await fetch(event.currentTarget.action, {
+			method: 'POST',
+			body: data
+		});
+
+		const result: ActionResult = deserialize(await response.text());
+
+		if (result.type === 'success') {
+			// rerun all `load` functions, following the successful update
+			visible = true
+			await invalidateAll();
+		}
+
+		applyAction(result);
+	}
 </script>
 <div class="flex w-full h-full">
 	<div class="flex-none mt-10 ml-10">
@@ -35,7 +59,7 @@
 			{/each}
 		</div>
 
-		<form method="POST" class="flex w-full"
+		<form method="POST" class="flex w-full" onsubmit={handleSubmit}
 			  use:enhance={({ formElement, formData, action, cancel }) => {
 				    visible = false
 				    messages = [...messages, message]
@@ -48,13 +72,13 @@
 
 		}>
 			{#if visible === true}
-			<Input class="grow dark:text-white " type="text" size="sm" placeholder="Сообщение" name="message"
-				   bind:value={message}/>
-			<Input class="grow dark:text-white hidden" type="text" size="sm" placeholder="Сообщение" name="chat_name"
-				   bind:value={chat_name}/>
-			<button class="flex-none" on:click={() => {}}>
-				<ForwardSolid class="w-6 h-6 justify-end"/>
-			</button>
+				<Input class="grow dark:text-white " type="text" size="sm" placeholder="Сообщение" name="message"
+					   bind:value={message}/>
+				<Input class="grow dark:text-white hidden" type="text" size="sm" placeholder="Сообщение" name="chat_name"
+					   bind:value={chat_name}/>
+				<button class="flex-none">
+					<ForwardSolid class="w-6 h-6 justify-end"/>
+				</button>
 			{/if}
 		</form>
 
