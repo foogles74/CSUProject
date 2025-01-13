@@ -1,4 +1,5 @@
 import json
+import time
 
 from fastapi import APIRouter, Body
 from fastapi.responses import JSONResponse
@@ -38,6 +39,8 @@ async def request_model(data=Body()):
             for message in history:
                 new_messages.append({"role": message.person,"content": message.value})
             new_messages.append({"role": "user","content": text})
+            # generated_text = "cz"
+
             generated_text = model.generate_text(new_messages)
             new_history_user = ChatHistory(chat_id = chat_id, person = "user",value = text)
             create_chat_history(new_history_user,session)

@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 import uvicorn
+from api_analytics.fastapi import Analytics
 from fastapi import FastAPI
 
 from models.qwen.qwem_model import QwenModel
@@ -17,6 +18,7 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(lifespan = lifespan)
+app.add_middleware(Analytics, api_key="@@@")
 app.include_router(sign_in_up_route, prefix='/user')
 app.include_router(balance_route, prefix='/balance')
 app.include_router(request_model_route)
@@ -25,4 +27,3 @@ app.include_router(chat_route, prefix='/ws')
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=True)
-    # QwenModel()

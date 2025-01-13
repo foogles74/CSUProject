@@ -16,3 +16,4 @@ pika
 python-jose
 uvicorn[standard]
 websocket
+api-analytics[fastapi]
