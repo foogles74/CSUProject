@@ -27,6 +27,7 @@ share/python-wheels/
 MANIFEST
 database/
 telebot/app/.env
+telelog/.env
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

@@ -18,7 +18,7 @@
             <NavLi href="/users/signin">Авторизация</NavLi>
           {/if}
           {#if data.auth === true}
-            <NavLi href="/users/balance">Пополнить баланс</NavLi>
+            <NavLi href="/users/balance">Пополнить баланс: {data.balance}</NavLi>
             <NavLi href="/users/logout" data-sveltekit-reload>Выйти</NavLi>
           {/if}
         </NavUl>

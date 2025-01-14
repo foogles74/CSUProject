@@ -5,7 +5,7 @@ import { redirect } from '@sveltejs/kit';
 export const actions = {
     default: async ({ cookies, request }) => {
         const data = await request.formData();
-        const login = data.get('login');
+        const login = cookies.get('email');
         const balance = data.get('balance');
         const response = await fetch('http://'+process.env.SERVER_IP+':8080/balance/change_balance', {
             method: 'POST',

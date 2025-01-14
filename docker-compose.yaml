@@ -22,6 +22,7 @@ services:
       - ./app:/app
     depends_on:
       - database
+      - rabbitmq
     deploy:
       resources:
         reservations:
@@ -51,9 +52,6 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
-    depends_on:
-      - app
-      - database
 #  telebot:
   ##    container_name: csu_telebot
   ##    build: ./telebot/
@@ -63,6 +61,16 @@ services:
   ##      - database
   ##    volumes:
   ##      - ./telebot:/telebot
+  telelog:
+    container_name: csu_telelog
+    build: ./telelog/
+    env_file:
+      - telelog/.env
+    depends_on:
+      - database
+      - rabbitmq
+    volumes:
+      - ./telelog:/telelog
   web-app:
     build: ./web_app
     env_file:

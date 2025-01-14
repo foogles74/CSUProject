@@ -1,0 +1,5 @@
+telebot
+pydantic
+pydantic_settings
+pyTelegramBotAPI
+pika

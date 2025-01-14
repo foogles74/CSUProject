@@ -1,5 +1,7 @@
 import type {Actions} from './$types';
 import type {PageServerLoad} from './$types';
+import {redirect} from "@sveltejs/kit";
+import {goto} from "$app/navigation";
 
 
 export const load: PageServerLoad = async ({data,cookies }) => {

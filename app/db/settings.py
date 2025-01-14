@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     DB_PASS: Optional[str] = None
     DB_NAME: Optional[str] = None
     SECRET_KEY: Optional[str] = None
+    FAST: Optional[str] = None
+    RABBIT_HOST: Optional[str] = None
 
     @property
     def DATABASE_URL_psycopg(self):

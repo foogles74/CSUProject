@@ -9,10 +9,6 @@
         <form class="flex flex-col space-y-6" method="POST">
             <h3 class="text-xl font-medium text-gray-900 dark:text-white p-0">Регистрация</h3>
             <Label class="space-y-2">
-                <span>Логин:</span>
-                <Input type="text" name="login" placeholder="логин" required/>
-            </Label>
-            <Label class="space-y-2">
                 <span>Сумма:</span>
                 <Input type="number" name="balance" placeholder="0" required/>
             </Label>

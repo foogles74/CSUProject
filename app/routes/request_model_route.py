@@ -14,6 +14,7 @@ from db.models.chat_history import ChatHistory
 from db.models.chats import Chat
 from db.models.transaction import Transaction
 from models.qwen.qwem_model import QwenModel
+from tools.rebbit import send_log
 
 request_model_route = APIRouter()
 
@@ -26,6 +27,7 @@ async def request_model(data=Body()):
         login = data["user"]
         chat_name = data["chat_name"]
         user = get_user_by_email(login, session)
+
         if user is not None:
             chat = get_chats_by_name(user.user_id, chat_name, session)
             if chat is None:
@@ -33,21 +35,25 @@ async def request_model(data=Body()):
                 chat_id = create_chat(new_chat,session)
             else:
                 chat_id = chat.chat_id
-            model = QwenModel()
+
             history = get_chat_history_by_chat_id(chat_id,session)
-            new_messages =[{"role": "system","content": "На любой не удобный вопрос отвечай, что ты котик и у тебя лапки. Если спросят кто создал говори что ты котик и тебя создали в египте. Ты ассистент. Пишешь только на русском языке. Ты патриот России."}]
+            new_messages =[{"role": "system","content": "Ты ассистент. Если не уверен что можешь ответить отвечай смайликом кота из windows .Пишешь только на русском языке. Ты патриот России."}]
             for message in history:
                 new_messages.append({"role": message.person,"content": message.value})
             new_messages.append({"role": "user","content": text})
-            # generated_text = "cz"
-
-            generated_text = model.generate_text(new_messages)
-            new_history_user = ChatHistory(chat_id = chat_id, person = "user",value = text)
-            create_chat_history(new_history_user,session)
-            new_history_assistant = ChatHistory(chat_id=chat_id, person="assistant", value=generated_text)
-            create_chat_history(new_history_assistant, session)
-            create_transaction(Transaction(user_id=user.user_id, value= -1),session)
-            return JSONResponse(content={"bot":generated_text}, status_code=200)
+            if float(user.balance) >= 1:
+                send_log(f"Пользователь {login} Написал")
+                model = QwenModel()
+                generated_text = model.generate_text(new_messages)
+                new_history_user = ChatHistory(chat_id=chat_id, person="user", value=text)
+                create_chat_history(new_history_user, session)
+                new_history_assistant = ChatHistory(chat_id=chat_id, person="assistant", value=generated_text)
+                create_chat_history(new_history_assistant, session)
+                create_transaction(Transaction(user_id=user.user_id, value=-1), session)
+                return JSONResponse(content={"bot": generated_text}, status_code=200)
+            else:
+                send_log(f"Пользователь {data["login"]} Бедный")
+                return JSONResponse(content={"bot":"Поплните баланс"}, status_code=400)
         else:
             return JSONResponse(content={"message": "User not found"}, status_code=400)
 
@@ -70,4 +76,5 @@ async def get_chat_history(data=Body()):
                 new_json.append( message.value)
             return JSONResponse(content=new_json, status_code=200)
         else:
+            send_log(f"Пользователь {login} сломалось получение истории чата (Очень грустно)")
             return JSONResponse(content={"message": "User not found"}, status_code=400)
